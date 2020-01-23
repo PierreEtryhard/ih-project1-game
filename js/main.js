@@ -2,7 +2,6 @@ const gamer = document.getElementById("player");
 const missiles = document.getElementById("missiles");
 const enemiesDom = document.getElementById("enemies");
 
-
 const player = {
     top: 750,
     left: 800,
@@ -17,41 +16,35 @@ const enemies = {
 }
 
 let timer = 0;
+let cptMissiles = 0;
 let cptMissEnemies = 0;
+let cptEnemyKilled = 0;
 const enemiesArray = [];
 const enemiesMissilesArray = [];
 const missilesArray = [];
-
-
-
-
 
 // Section PLAYER
 
 function interactWithPlayer(e) {
     if(e.keyCode == 37 && isInTheMap()) {
-        console.log("left");
         player.left -= player.speed;
         drawPlayerLat();
     } else if(e.keyCode == 39 && isInTheMap()) {
-        console.log("right");
         player.left += player.speed;
         drawPlayerLat();
     } else if (e.keyCode == 38 && isInTheMap()) {
-        console.log("up");
         player.top -= player.speed;
         drawPlayerVert();
     } else if (e.keyCode == 40 && isInTheMap()) {
-        console.log("down");
         player.top += player.speed;
         drawPlayerVert();
     } else if (e.keyCode == 32) {
-        console.log("FIRE !!!!"); 
         missilesArray.push({
-            left: player.left - 90,
+            left: player.left + 65,
             top: player.top,
         });
-        console.log(missilesArray);
+        playLaser();
+        cptMissiles += 1;
     }
 }
 
@@ -139,7 +132,8 @@ function removeEnemies() {
             enemiesArray.splice(enemiesArray[i], 1);
             cptMissEnemies += 1;
             if (cptMissEnemies === 5) {
-                // gameOver();
+                displayGo();
+                displayMissiles();
             }
         }
     }
@@ -156,34 +150,35 @@ function createEnemies(nbr) {
 
 createEnemies(enemies.number);
 
-function modifySpec() {
-    if (timer %  20 === 0) {
-        enemies.number += 2;
-        enemies.speed += 1;
-        player.speed += 2;
-    }
-    if(time % 40 === 0){
-        enemies.number += 4;
-        enemies.speed +=2;
-        player.speed += 3;
-    }
-    if (timer % 60 === 0) {
-        enemies.number += 6;
-        enemies.speed += 3;
-        player.speed += 4;
-    }
-    if (timer % 90 === 0) {
-        enemies.number += 8;
-        enemies.speed += 4;
-        player.speed += 5;
-    }
-}
+// function modifySpec() {
+//     if (timer %  20 === 0) {
+//         enemies.number += 2;
+//         enemies.speed += 1;
+//         player.speed += 2;
+//     }
+//     if(timer % 40 === 0){
+//         enemies.number += 4;
+//         enemies.speed +=2;
+//         player.speed += 3;
+//     }
+//     if (timer % 60 === 0) {
+//         enemies.number += 6;
+//         enemies.speed += 3;
+//         player.speed += 4;
+//     }
+//     if (timer % 90 === 0) {
+//         enemies.number += 8;
+//         enemies.speed += 4;
+//         player.speed += 5;
+//     }
+// }
 
 let enemyInterval = window.setInterval(() => createEnemies(enemies.number), 3000);
 
 // Collision 
 
 function detectCollision() {
+    const enm = document.querySelectorAll(".enemy");
     for (let i=0; i<enemiesArray.length; i++) {
         for (let j=0; j<missilesArray.length; j++) {
             if ((missilesArray[j].top <= enemiesArray[i].top + 70) && 
@@ -193,6 +188,8 @@ function detectCollision() {
             ){
                 enemiesArray.splice(i,1);
                 missilesArray.splice(j,1);
+                playExplo();
+                cptEnemyKilled += 1;
                 player.score += 5;
             }
         }
@@ -229,21 +226,67 @@ function startGame() {
 let gameInterval = window.setInterval(gameLoop, 70);
 function gameLoop() {
     detectCollision();
-    
+    displayScore();
+    // modifySpec();
 }
 
 const startBtn = document.getElementById("start");
+const restartGame = document.getElementById("play-again");
 
 //Anim button
 function removePopUp() {
     const box = document.getElementById("box-start");
-    box.classList.remove("visible");
-    box.classList.add("hidden");
+    box.style.display = "none";
 }
+
+function displayGo() {
+    const goBox = document.getElementById("box-go");
+    goBox.style.display = "flex";
+}
+
+function disapGo() {
+    const goBox = document.getElementById("box-go");
+    goBox.style.display = "flex";
+}
+
 startBtn.onclick = function() {
     removePopUp()
     gameLoop();
     requestAnimationFrame(draw);
 };
+restartGame.onclick = function () {
+    location.reload();
+}
+
+//display score
+function displayScore() {
+    let score = document.getElementById("score");
+    score.textContent = player.score;
+}
+
+function displayMissiles() {
+    const missi = document.getElementById("missthrew");
+    missi.textContent = "Missiles threw : " + cptMissiles;
+    const killed = document.getElementById("enmkilled");
+    killed.textContent = "Enemnies killed : " + cptEnemyKilled;
+}  
 
 document.onkeydown = interactWithPlayer
+
+
+
+//music 
+
+function playLaser() {
+    var audio = new Audio('./assets/music/laser.mp3');
+        audio.volume = 0.2;
+       audio.play();
+       return false;
+}
+
+function playExplo() {
+    var audio = new Audio('./assets/music/explosion.mp3');
+    audio.volume = 0.2;
+    audio.play();
+    return false;
+}

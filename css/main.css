@@ -20,7 +20,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* position: relative; */
+    position: relative;
 }
 
 #player {
@@ -110,11 +110,78 @@ h1 {
     font-size: 60px;
 }
 
-.visible {
-    visibility: visible;
+/* .visible {
+    display: block;
 }
 
 .hidden {
-    visibility: hidden;
+    display: none;
+} */
+
+/* .exploded {
+    background-image: url('../assets/images/explod.gif') !important; 
+    background-size: cover;
+    height: 80px;
+    width: 80px;
+} */
+
+#box-go {
+    height: 55%;
+    position: relative;
+    z-index: 80;
+    width: 70%;
+    background-image: url('../assets/images/lost.gif');
+    background-size: cover;
+    display: flex;
+    flex-direction : column;
+    align-items: center;
+    display: none;
 }
 
+#play-again {
+    padding: 15px 50px;
+    background-color: #F8E41E;
+    font-weight: bold;
+    font-size: 30px;
+    margin-top: 50px;
+}
+#game-over h2{
+    margin-bottom: 20px;
+    padding: 0;
+    margin-top: 40px;
+    color: #F8E41E;
+    font-size: 60px;
+}
+
+#final-score {
+    display: flex;
+    flex-direction: column;
+    font-size: 30px;
+    color: white;
+}
+
+#missthrew {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#enmkilled {
+    margin-bottom: 20px;
+}
+
+#score {
+    top: 0;
+    left: 0;
+    position: absolute;
+    border-bottom-right-radius: 20%;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 130px;
+    width: 130px;
+    /* background-color: #F8E41E; */
+    opacity: 80%;
+    background-image: url('../assets/images/giphy.gif');
+    color: white;
+}
