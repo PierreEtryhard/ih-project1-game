@@ -11,9 +11,10 @@ const player = {
 
 const enemies = {
     speed: 1,
-    number: 3,
+    number: 4,
     isKilled: false
 }
+
 
 let timer = 0;
 let cptMissiles = 0;
@@ -50,31 +51,24 @@ function interactWithPlayer(e) {
 
 function isInTheMap() {
     if (player.top < 0 ) {
-        console.log("can't move")
         player.top = 0;
     } else if (player.left < 120) {
-        console.log("can't move")
         player.left = 120;
     } else if (player.top > 750) {
-        console.log("can't move")
         player.top = 750;
     } else if (player.left > 1420) {
-        console.log("can't move");
         player.left = 1420;
     } else {
-        console.log("in the map")
         return true;
     }
 }
 
 function drawPlayerLat() {
     gamer.style.left = player.left + "px";
-    console.log("player one's x = " + player.left);
 }
 
 function drawPlayerVert() {
     gamer.style.top = player.top + "px";
-    console.log("player one's x = " + player.top);
 } 
 
 
@@ -133,7 +127,7 @@ function removeEnemies() {
             cptMissEnemies += 1;
             if (cptMissEnemies === 5) {
                 displayGo();
-                displayMissiles();
+                displayStats();
             }
         }
     }
@@ -142,7 +136,7 @@ function removeEnemies() {
 function createEnemies(nbr) {
     for(let i=0; i<nbr; i++) {
         enemiesArray.push({
-            left: Math.floor(Math.random() * 1300 + 50),
+            left: Math.floor(Math.random() * 1300 + 80),
             top: Math.floor(Math.random() * (-400) + (-10))
         })
     } 
@@ -150,30 +144,30 @@ function createEnemies(nbr) {
 
 createEnemies(enemies.number);
 
-// function modifySpec() {
-//     if (timer %  20 === 0) {
-//         enemies.number += 2;
-//         enemies.speed += 1;
-//         player.speed += 2;
-//     }
-//     if(timer % 40 === 0){
-//         enemies.number += 4;
-//         enemies.speed +=2;
-//         player.speed += 3;
-//     }
-//     if (timer % 60 === 0) {
-//         enemies.number += 6;
-//         enemies.speed += 3;
-//         player.speed += 4;
-//     }
-//     if (timer % 90 === 0) {
-//         enemies.number += 8;
-//         enemies.speed += 4;
-//         player.speed += 5;
-//     }
-// }
+function modifySpec() {
+    timer += 1;
+    if (timer %  20 === 0) {
+        enemies.number += 3;
+        player.speed += 10;
+    }
+    if(timer % 40 === 0){
+        enemies.number += 5;
+        player.speed += 15;
+    }
+    if (timer % 60 === 0) {
+        enemies.number += 7;
+        player.speed += 15;
+    }
+    if (timer % 80 === 0) {
+        enemies.number += 8;
+        player.speed += 15;
+    }
 
-let enemyInterval = window.setInterval(() => createEnemies(enemies.number), 3000);
+    if (timer % 100 === 0) {
+        enemies.number += 10;
+        player.speed += 15;
+    }
+}
 
 // Collision 
 
@@ -207,27 +201,17 @@ function draw() {
     moveEnemies();
 }
 
-// function runTimer() {
-//     const startTimer = () => {
-//         timer += 1;
-//     };
-//     intervalId = setInterval(startTimer, 1000);
-// }
-
-function startGame() {
-    // runTimer();
-    gameLoop();
+// Intervals 
+function setIntervals() {
+    let enemyInterval = window.setInterval(() => createEnemies(enemies.number), 5000);
+    let difficultyInterval = window.setInterval(modifySpec, 1000);
+    let gameInterval = window.setInterval(gameLoop, 70);
 }
 
-// function gameOver() {
-//     // stopGame();
-//     alert("you fucking loser !");
-// }
-let gameInterval = window.setInterval(gameLoop, 70);
+
 function gameLoop() {
     detectCollision();
     displayScore();
-    // modifySpec();
 }
 
 const startBtn = document.getElementById("start");
@@ -250,7 +234,8 @@ function disapGo() {
 }
 
 startBtn.onclick = function() {
-    removePopUp()
+    setIntervals();
+    removePopUp();
     gameLoop();
     requestAnimationFrame(draw);
 };
@@ -264,7 +249,9 @@ function displayScore() {
     score.textContent = player.score;
 }
 
-function displayMissiles() {
+function displayStats() {
+    const accuracy = document.getElementById("fscore");
+    accuracy.textContent = "Accuracy : " + (cptMissiles/cptEnemyKilled);
     const missi = document.getElementById("missthrew");
     missi.textContent = "Missiles threw : " + cptMissiles;
     const killed = document.getElementById("enmkilled");

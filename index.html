@@ -4,28 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./css/game.css">
-    <script type="module" src="./js/game.js"></script>
+    <title>Shooting Stars</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <script type="module" src="./js/main.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Pathway+Gothic+One&display=swap" rel="stylesheet">
-    <title>Star Combination </title>
 </head>
 <body>
-    <div id="bg-home">
-        <div class="game-title">
-            <h1>STAR COMBINATION</h1>
+    <!-- <audio id="laser-sound" src="./assets/music/laser.mp3"></audio> -->
+    <audio src="./assets/music/theme.mp3" autoplay="true" loop="true" type="audio/mp3"></audio>
+    <div id="scene">
+        <div id="score"> 0
         </div>
-        <div id="buttons">
-            <div id="rules">
-                <a href="#"><button id="btn-rules">How to play</button></a>
+        <div id="container">
+            <div id="box-start">
+                <div>
+                    <h1 id="title">SHOOTING STARS</h1>
+                </div>
+
+                <div id="how-to-play">
+                    <p>Shoot all the ships that come to you before
+                        5 of them hit the ground.
+                    </p>
+                    <p id="arrow"> Use the arrow keys to move the
+                        Millenium Falcon and Fire with the space bar !
+                    </p>
+                </div>
+                <button id="start" type="button">START THE GAME</button>
             </div>
-            <div id="play">
-                <a href="#"><button id="btn-start" >Start a game</button></a>
+            <div id="player"></div>
+            <div id="enemies"></div>
+            <div id="missiles"></div>
+
+            <!-- class="hidden -->
+            <div id="box-go"> 
+                <div id="game-over">
+                    <h2>GAME OVER</h2>
+                </div>
+                <div id="final-score">
+                    <span id="missthrew"> </span>
+                    <span id="enmkilled"> </span>
+                    <span id="fscore"></span>
+                </div>
+                <button id="play-again" type="button">PLAY AGAIN</button>
             </div>
-        </div>
-            
-        <div id="pop-game-rules" class="hidden">
-            <p>lorem allaalalalalalal</p>
-        </div>
+        </div>  
     </div>
 </body>
 </html>
+
